@@ -41,16 +41,17 @@ void setup() {
   M5.Lcd.print("Setup....");
 
   initBLE();
-  initLCDcolor();
+  //initLCDcolor();
+  M5.IMU.Init();
 
   M5.Lcd.println("Done");
+  M5.Lcd.fillScreen(BLACK);
 }
 
 // the loop routine runs over and over again forever
 void loop() {
   M5.update();
   loopBLE();
-  loopLCDcolor();
   loopSensor();
 }
 
@@ -88,16 +89,6 @@ class MyCallbacks : public BLECharacteristicCallbacks {
       if (cmd == "RED") {
         // RED
         lastColor = "RED";
-        updateColor = true;
-      }
-      if (cmd == "YELLOW") {
-        // YELLOW
-        lastColor = "YELLOW";
-        updateColor = true;
-      }
-      if (cmd == "BLUE") {
-        // BLUE
-        lastColor = "BLUE";
         updateColor = true;
       }
     }
@@ -150,13 +141,7 @@ void loopBLE() {
   }
 }
 
-///////////////
-// LCD Color //
-///////////////
-void initLCDcolor() { lastColor = "NONE"; }
-
 void loopSensor() {
-  M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setCursor(0, 0);
   M5.Lcd.printf("ahrs\n");
   M5.IMU.getAhrsData(&pitchG, &rollG, &yawG);
@@ -176,8 +161,8 @@ void loopSensor() {
   M5.Lcd.printf("r= %7.2f\n", rollA);
   M5.Lcd.printf("y= %7.2f\n", yawA);
 
-  stringValue = "";
-  stringValue += String((int)(pitchG*100)) + ",";
+  stringValue = "\n";
+  stringValue += String((int)(pitchG * 100)) + ",";
   stringValue += String((int)(rollG * 100)) + ",";
   stringValue += String((int)(yawG * 100)) + ",";
   stringValue += String((int)(x * 100)) + ",";
@@ -189,42 +174,9 @@ void loopSensor() {
 
   if (deviceConnected) {
     char sendMessage[150];
-    stringValue.toCharArray(sendMessage, 10);
+    stringValue.toCharArray(sendMessage, 150);
     pNotifyCharacteristic->setValue(sendMessage);
     pNotifyCharacteristic->notify();
   }
   delay(10);
-}
-
-void loopLCDcolor() {
-  if (M5.BtnA.wasPressed()) {
-    lastColor = "RED";
-    updateColor = true;
-  }
-  if (M5.BtnB.wasPressed()) {
-    lastColor = "YELLOW";
-    updateColor = true;
-  }
-
-  if (updateColor) {
-    if (lastColor == "RED") {
-      // RED
-      M5.Lcd.fillScreen(RED);
-    }
-    if (lastColor == "YELLOW") {
-      // YELLOW
-      M5.Lcd.fillScreen(YELLOW);
-    }
-    if (lastColor == "BLUE") {
-      // BLUE
-      M5.Lcd.fillScreen(BLUE);
-    }
-    if (deviceConnected) {
-      char sendMessage[10];
-      lastColor.toCharArray(sendMessage, 10);
-      pNotifyCharacteristic->setValue(sendMessage);
-      pNotifyCharacteristic->notify();
-    }
-    updateColor = false;
-  }
 }
