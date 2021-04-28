@@ -170,7 +170,7 @@ void loopSensor() {
   stringValue += String((int)(z * 100)) + ",";
   stringValue += String((int)(pitchA * 100)) + ",";
   stringValue += String((int)(rollA * 100)) + ",";
-  stringValue += String((int)(yawA * 100)) + ",";
+  stringValue += String((int)(yawA * 100));
 
   if (deviceConnected) {
     char sendMessage[150];
