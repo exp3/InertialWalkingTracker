@@ -77,24 +77,6 @@ class MyServerCallbacks : public BLEServerCallbacks {
   void onDisconnect(BLEServer *pServer) { deviceConnected = false; }
 };
 
-// Bluetooth LE Recive
-// 文字列をiOS側から受け取ってswitchとかで何かする。
-class MyCallbacks : public BLECharacteristicCallbacks {
-  void onWrite(BLECharacteristic *pCharacteristic) {
-    std::string rxValue = pCharacteristic->getValue();
-    if (rxValue.length() > 0) {
-      String cmd = String(rxValue.c_str());
-      Serial.print("Received Value: ");
-      Serial.println(cmd);
-      if (cmd == "RED") {
-        // RED
-        lastColor = "RED";
-        updateColor = true;
-      }
-    }
-  }
-};
-
 // Bluetooth LE initialize
 void initBLE() {
   // Create the BLE Device
