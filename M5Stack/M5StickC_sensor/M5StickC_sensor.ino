@@ -124,18 +124,10 @@ void loopBLE() {
 }
 
 void loopSensor() {
-  M5.Lcd.setCursor(0, 0);
-  M5.Lcd.printf("ahrs\n");
-  M5.IMU.getAhrsData(&pitchG, &rollG, &yawG);
-  M5.Lcd.printf("p= %7.2f\n", pitchG);
-  M5.Lcd.printf("r= %7.2f\n", rollG);
-  M5.Lcd.printf("y= %7.2f\n", yawG);
 
-  M5.Lcd.printf("accel\n");
+  M5.IMU.getAhrsData(&pitchG, &rollG, &yawG);
+
   M5.IMU.getAccelData(&x, &y, &z);
-  M5.Lcd.printf("y= %7.2f\n", x);
-  M5.Lcd.printf("x= %7.2f\n", y);
-  M5.Lcd.printf("z= %7.2f\n", z);
 
   M5.Lcd.printf("gyro\n");
   M5.IMU.getGyroData(&pitchA, &rollA, &yawA);
