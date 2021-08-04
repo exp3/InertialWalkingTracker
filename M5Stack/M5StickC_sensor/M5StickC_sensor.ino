@@ -1,3 +1,4 @@
+//右大腿用プログラムの例
 #include <M5StickC.h>
 // Bluetooth LE
 #include <BLE2902.h>
@@ -46,6 +47,8 @@ void setup() {
 
   M5.Lcd.println("Done");
   M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setCursor(0, 0);
+  M5.Lcd.println("conect...");
 }
 
 // the loop routine runs over and over again forever
@@ -63,7 +66,9 @@ BLECharacteristic *pNotifyCharacteristic;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
 
-#define LOCAL_NAME "M5Stack-Color"
+// 端末の役割ごとにLOCAL_NAMEを設定する
+#define LOCAL_NAME "M5StickC-RightThighs"
+
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 #define SERVICE_UUID "e5a1c9a8-ab93-11e8-98d0-529269fb1459"
